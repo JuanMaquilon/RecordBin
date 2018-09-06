@@ -9,11 +9,9 @@ import Notification from '../utils/notificationSystem';
 const App = () => (
   <React.Fragment>
     <Header />
-    <div style={{ paddingTop: 70 }} >
-
+    <div style={{ paddingTop: 70 }}>
       <Route exact path="/" component={Home} />
       <Route exact path="/aboutUs" component={About} />
-
     </div>
     <Footer />
     <Notification />

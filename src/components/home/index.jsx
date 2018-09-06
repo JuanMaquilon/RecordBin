@@ -1,29 +1,34 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addNotification } from '../../actions/notificationActions';
+import RecordActions from '../../actions/recordActions';
 
-const Home = props => {
-  // Testing the notification system component
-  props.dispatch(
-    addNotification({
-      title: 'Success',
-      message: 'The loaded successfully.',
-      level: 'success'
-    })
-  );
-  return (
-    <div className="container">
-      <h1>Home Page</h1>
-      <p>This a home page</p>
-      <p> Reading pathname from the state ->> {props.routing.pathname}</p>
+class Home extends Component {
+  componentDidMount() {
+    this.props.dispatch(RecordActions.loadRecordsAsync());
+  }
 
-      <button className="btn btn-primary">Button primary</button>
-    </div>
-  );
-};
+  render() {
+    const records = this.props.records.get('records').map(record => {
+      return (
+        <div
+          className="card border-primary mb-3"
+          style={{ 'max-width': '30rem' }}>
+          <div className="card-header">{record.get('artist')}</div>
+          <div className="card-body">
+            <h4 className="card-title">{record.get('recordName')}</h4>
+            <p className="card-text">Category: {record.get('category')}</p>
+            <p className="card-text">Year: {record.get('year')}</p>
+          </div>
+        </div>
+      );
+    });
+
+    return <div className="container">{records}</div>;
+  }
+}
 
 const mapStateToProps = state => ({
-  routing: state.routing.location
+  records: state.record
 });
 
 export default connect(mapStateToProps)(Home);
